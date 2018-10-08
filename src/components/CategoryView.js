@@ -8,16 +8,15 @@ export class CategoryView extends React.Component{
 
   render(){
     function getSelectedPropertyNumber(categories, categoryNumber){
-      for(var i=0; i<categories.length;i++){
-        if(categories[i]==categoryNumber ){
+      for(let i=0; i<categories.length;i++){
+        if(categories[i]===categoryNumber ){
           return i;
         }
       }
       return -1;
     }
-    var propertyMass = this.props.category.properties;
-    var propertyNumber = getSelectedPropertyNumber(this.props.product.categories, this.props.categoryNumber)
-    var selectedResult = this.props.product.properties[propertyNumber].values;
+    let propertyMass = this.props.category.properties;
+    let propertyNumber = getSelectedPropertyNumber(this.props.product.categories, this.props.categoryNumber)
     return(
       <div>
         {propertyMass.map((property, prop_idx)=>(

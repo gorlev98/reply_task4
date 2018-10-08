@@ -103,16 +103,16 @@ class App extends React.Component {
   }
   selectProduct(name){
     function findNumber(obj,name){
-      var products = obj.state.products;
-      for(var i=0; i<products.length; i++){
+      let products = obj.state.products;
+      for(let i=0; i<products.length; i++){
         if(products[i].product === name){
           return i;
         }
       }
       return -1;
     }
-    var number = findNumber(this,name);
-    if(number !=-1) {
+    let number = findNumber(this,name);
+    if(number !==-1) {
       this.setState({
         selectedProduct: number,
         tempProduct:JSON.parse(JSON.stringify(this.state.products[number])),
@@ -124,21 +124,21 @@ class App extends React.Component {
   }
   selectProductsCategory(name){
     function findNumber(obj,name){
-      var categories = obj.state.categories;
-      for(var i=0; i<categories.length; i++){
-        if(categories[i].name==name){
+      let categories = obj.state.categories;
+      for(let i=0; i<categories.length; i++){
+        if(categories[i].name===name){
           return i;
         }
       }
       return -1;//если выбрана чёрточка также тут будет обрабатываться
     }
-    var number = findNumber(this,name);
+    let number = findNumber(this,name);
     this.setState({
       selectedCategory: number
     })
   }
   addNewProductButtonFunction(){
-    var emptyProduct = {
+    let emptyProduct = {
       product: "",
       date: "",
       categories: [],
@@ -158,8 +158,8 @@ class App extends React.Component {
   }
   removeProductCategory(categoryNumber){
     function fingPropertyPosition(categoryNumber, tempCategories){
-      for(var i=0; i<tempCategories.length;i++){
-        if(tempCategories[i]==categoryNumber){
+      for(let i=0; i<tempCategories.length;i++){
+        if(tempCategories[i]===categoryNumber){
           return i;
         }
       }
@@ -168,11 +168,11 @@ class App extends React.Component {
       categories.splice(index,1);
       properties.splice(index,1);
     }
-    var tempCategories = this.state.tempProduct.categories
-    var tempProperties = this.state.tempProduct.properties;
-    var index = fingPropertyPosition(categoryNumber,tempCategories);
+    let tempCategories = this.state.tempProduct.categories
+    let tempProperties = this.state.tempProduct.properties;
+    let index = fingPropertyPosition(categoryNumber,tempCategories);
     removeChosedElem(tempCategories,tempProperties,index);
-    var viewProduct = this.state.tempProduct;
+    let viewProduct = this.state.tempProduct;
     viewProduct.categories=tempCategories;
     viewProduct.properties=tempProperties;
     this.setState({
@@ -181,18 +181,18 @@ class App extends React.Component {
   }
   addProductCategory(){
     function createPropertyesMass(length){
-      var mass=[];
-      for(var i=0; i<length; i++){
+      let mass=[];
+      for(let i=0; i<length; i++){
         mass[i]=0;
       }
       return mass;
     }
-    var newCategory = this.state.selectedUnusedCategory;
-    if(newCategory!=-1){
-      var categories = this.state.tempProduct.categories;
+    let newCategory = this.state.selectedUnusedCategory;
+    if(newCategory!==-1){
+      let categories = this.state.tempProduct.categories;
       categories[categories.length]=newCategory;
-      var propertyNumber = this.state.categories[newCategory].properties.length;
-      var properties = this.state.tempProduct.properties;
+      let propertyNumber = this.state.categories[newCategory].properties.length;
+      let properties = this.state.tempProduct.properties;
       properties[properties.length]=createPropertyesMass(propertyNumber);
       this.setState({
         tempProduct:{
@@ -207,10 +207,8 @@ class App extends React.Component {
   }
   add_resaveProductFunc(){
     function findProduct(obj){
-      for(var i=0; i<obj.products.length; i++){
+      for(let i=0; i<obj.products.length; i++){
         if(obj.products[i].product===obj.tempProduct.product){
-          console.log("correct find:");
-          console.log(obj.products[i].product+" "+obj.tempProduct.product)
           return i;
         }
       }
@@ -221,22 +219,18 @@ class App extends React.Component {
         return !isNaN(parseFloat(n)) && isFinite(n);
       }
       function isCorrectDate(obj){
-        var dateElem = obj.date.split('.');
-        var date = Number.parseInt(dateElem[0]);
-        var month=Number.parseInt(dateElem[1]);
-        var year = Number.parseInt(dateElem[2]);
+        let dateElem = obj.date.split('.');
+        let date = Number.parseInt(dateElem[0]);
+        let month=Number.parseInt(dateElem[1]);
+        let year = Number.parseInt(dateElem[2]);
         if(isNumeric(date)&&isNumeric(month)&&isNumeric(year)){
-          console.log("split correct");
           if(date[0]<0 || date[0]>31){
-            console.log("uncorrect date");
             return false;
           }
           if(month[1]<0 || month[1]>12){
-            console.log("uncorrect month");
             return false;
           }
           if(year[2]<0){
-            console.log("uncorrect year");
             return false;
           }
           return true;
@@ -246,38 +240,30 @@ class App extends React.Component {
         }
       }
       if(obj.product === ""){
-        console.log("uncorrect product");
         return false;
       }
       if(!isCorrectDate(obj)){
-        console.log("uncorrect date");
         return false;
       }
-      console.log("obj.categories");
-      console.log(obj.categories);
       if(obj.categories.length===0){
-        console.log("uncorrect categories")
         return false;
       }
       return true;
-      //
-      // if(obj.date)
-
 
     }
     if(isCorrectProduct(this.state.tempProduct)) {
-      var number = findProduct(this.state);
-      var emptyProduct = {
+      let number = findProduct(this.state);
+      let emptyProduct = {
         product: "",
         date: "",
         categories: [],
         properties: []
       };
+      let products = this.state.products;
       if (number >= 0) {//переделка старого
-        var productMass = this.state.products;
-        productMass[number] = JSON.parse(JSON.stringify(this.state.tempProduct));
+        products[number] = JSON.parse(JSON.stringify(this.state.tempProduct));
         this.setState({
-          products: productMass,
+          products: products,
           tempProduct: JSON.parse(JSON.stringify(emptyProduct)),
           selectedProduct:-1,// -1 - no selected product
           addNew:false,
@@ -286,10 +272,9 @@ class App extends React.Component {
         })
       }
       else {//новый
-        var productMass = this.state.products;
-        productMass[productMass.length] = JSON.parse(JSON.stringify(this.state.tempProduct));
+        products[products.length] = JSON.parse(JSON.stringify(this.state.tempProduct));
         this.setState({
-          products: productMass,
+          products: products,
           tempProduct: emptyProduct,
           selectedProduct:-1,// -1 - no selected product
           addNew:false,
@@ -308,30 +293,23 @@ class App extends React.Component {
     const value = e.target.value;
     const target=e.target;
     const name  = target.className;
-    var viewProduct = JSON.parse(JSON.stringify(this.state.tempProduct));
-    console.log(viewProduct);
+    let viewProduct = JSON.parse(JSON.stringify(this.state.tempProduct));
     viewProduct[name]=value;
-    console.log("viewProduct2");
-    console.log(viewProduct);
-    //console.log(viewProduct);
     this.setState({
       tempProduct:JSON.parse(JSON.stringify(viewProduct))
     })
   }
   changePropertyFunc(e){
     function getNewAnswerNumber(answer, properties){
-      console.log(answer);
-      console.log(properties.values);
       return properties.values.indexOf(answer);
     }
     const value = e.target.value;
-    const target=e.target;
     const name  = e.target.name;
-    var viewProduct = this.state.tempProduct;
-    var nameParts = name.split(' ');
+    let viewProduct = this.state.tempProduct;
+    let nameParts = name.split(' ');
     //0 - наш ответ буквами, 1 - номер property у нашего товара, 2 - номер категории для нахождения номера нового ответа
     //2 - номер свойства у категории
-    var newAnswerNumber = getNewAnswerNumber(value, this.state.categories[Number.parseInt(nameParts[2])].properties[Number.parseInt(nameParts[3])]);
+    let newAnswerNumber = getNewAnswerNumber(value, this.state.categories[Number.parseInt(nameParts[2])].properties[Number.parseInt(nameParts[3])]);
     viewProduct.properties[Number.parseInt(nameParts[1])].values[Number.parseInt(nameParts[3])]=newAnswerNumber;
     this.setState({
       tempProduct:viewProduct
@@ -339,14 +317,14 @@ class App extends React.Component {
   }
   changeCategoryName(e){
     const value = e.target.value;
-    var tempCategory = this.state.tempCategory;
+    let tempCategory = this.state.tempCategory;
     tempCategory.name=value;
     this.setState({
       tempCategory:tempCategory
     })
   }
   addProperty(){
-    var tempCategory = this.state.tempCategory;
+    let tempCategory = this.state.tempCategory;
     tempCategory.properties[tempCategory.properties.length]={
       property_name:"",
       values:[]
@@ -357,15 +335,15 @@ class App extends React.Component {
   }
   addValue(property_name){
     function findPropertyNumber(properties, property_name){
-      for(var i=0; i<properties.length; i++){
+      for(let i=0; i<properties.length; i++){
         if(properties[i].property_name===property_name){
           return i;
         }
       }
     }
-    var tempCategory= this.state.tempCategory;
-    var number = findPropertyNumber(tempCategory.properties, property_name);
-    var values = tempCategory.properties[number].values;
+    let tempCategory= this.state.tempCategory;
+    let number = findPropertyNumber(tempCategory.properties, property_name);
+    let values = tempCategory.properties[number].values;
     values[values.length]="";
     this.setState({
       tempCategory:tempCategory
@@ -373,14 +351,14 @@ class App extends React.Component {
   }
   removeProperty(property_name){
     function findPropertyNumber(properties, property_name){
-      for(var i=0; i<properties.length; i++){
+      for(let i=0; i<properties.length; i++){
         if(properties[i].property_name===property_name){
           return i;
         }
       }
     }
-    var tempCategory= this.state.tempCategory;
-    var number = findPropertyNumber(tempCategory.properties, property_name);
+    let tempCategory= this.state.tempCategory;
+    let number = findPropertyNumber(tempCategory.properties, property_name);
     tempCategory.properties.splice(number,1);
     this.setState({
       tempCategory:tempCategory
@@ -388,14 +366,14 @@ class App extends React.Component {
   }
   removeValue(property_name, id){
     function findPropertyNumber(properties, property_name){
-      for(var i=0; i<properties.length; i++){
+      for(let i=0; i<properties.length; i++){
         if(properties[i].property_name===property_name){
           return i;
         }
       }
     }
-    var tempCategory= this.state.tempCategory;
-    var number = findPropertyNumber(tempCategory.properties, property_name);
+    let tempCategory= this.state.tempCategory;
+    let number = findPropertyNumber(tempCategory.properties, property_name);
     tempCategory.properties[number].values.splice(id,1);
 
     this.setState({
@@ -403,8 +381,8 @@ class App extends React.Component {
     })
   }
   changeTempProperty(index){
-    var value = document.getElementById("input/"+index).value;
-    var tempCategory = this.state.tempCategory;
+    let value = document.getElementById("input/"+index).value;
+    let tempCategory = this.state.tempCategory;
     tempCategory.properties[index].property_name=value;
     this.setState({
       tempCategory:tempCategory
@@ -412,7 +390,7 @@ class App extends React.Component {
   }
   changeTempValue(e){
     function findPropertyNumber(properties, property_name){
-      for(var i=0; i<properties.length; i++){
+      for(let i=0; i<properties.length; i++){
         if(properties[i].property_name===property_name){
           return i;
         }
@@ -421,9 +399,9 @@ class App extends React.Component {
     const value = e.target.value;
     const target=e.target;
     const name  = target.className.split('/');
-    var number = findPropertyNumber(this.state.tempCategory.properties, name[1]);
-    var property_number = name[3];
-    var tempCategory = this.state.tempCategory;
+    let number = findPropertyNumber(this.state.tempCategory.properties, name[1]);
+    let property_number = name[3];
+    let tempCategory = this.state.tempCategory;
     tempCategory.properties[number].values[property_number] = value;
     this.setState({
       tempCategory:tempCategory
@@ -431,23 +409,20 @@ class App extends React.Component {
   }
   saveCategory(){
     function isCorrectCategory(tempCategory){
-      console.log("isCorrectCategory call");
       if(tempCategory.name===""){
         alert("uncorrect name");
         return false;
       }
-      console.log(tempCategory.properties);
       if(tempCategory.properties.length===0){
         alert("no properties");
         return false;
       }
-      for(var i=0; i<tempCategory.properties.length; i++){
-        console.log(tempCategory.properties[i].values);
+      for(let i=0; i<tempCategory.properties.length; i++){
         if(tempCategory.properties[i].values.length===0 || tempCategory.properties[i].property_name===""){
           alert("Uncorrect property (maybe you don't save property name or there no any values)");
           return false;
         }
-        for(var j=0; j<tempCategory.properties[i].values.length;j++){
+        for(let j=0; j<tempCategory.properties[i].values.length;j++){
           if(tempCategory.properties[i].values[j]===""){
             alert("Uncorrect property value");
             return false;
@@ -456,11 +431,10 @@ class App extends React.Component {
       }
       return true;
     }
-    console.log("saveCategory called");
     if(isCorrectCategory(this.state.tempCategory)){
-      var categories = this.state.categories;
+      let categories = this.state.categories;
       categories[categories.length]=JSON.parse(JSON.stringify(this.state.tempCategory));
-      var emptyCategory = {
+      let emptyCategory = {
         name:"",
         properties:[]
       }
@@ -478,26 +452,24 @@ class App extends React.Component {
   }
   render() {
     function createCategoryMass(obj){
-      var mass=[];
-      for(var i=0; i<obj.categories.length;i++){
+      let mass=[];
+      for(let i=0; i<obj.categories.length;i++){
         mass[i]=obj.categories[i].name;
       }
-      //mass[obj.categories.length]="-";
       return mass;
     }
     function createSelectedProductsMass(obj){
-      var mass=[];var j=0;
-      for(var i=0;i<obj.products.length;i++){
-        if(obj.products[i].categories.indexOf(obj.selectedCategory)!=-1 || obj.selectedCategory==-1){
+      let mass=[];let j=0;
+      for(let i=0;i<obj.products.length;i++){
+        if(obj.products[i].categories.indexOf(obj.selectedCategory)!==-1 || obj.selectedCategory===-1){
           mass[j]=obj.products[i];
           j++;
         }
       }
       return mass;
     }
-    var categoryMass=createCategoryMass(this.state);
-    var productMass=createSelectedProductsMass(this.state);
-    var selectedProduct = this.state.tempProduct;
+    let categoryMass=createCategoryMass(this.state);
+    let productMass=createSelectedProductsMass(this.state);
     return (
       <div>
         <ProductList
@@ -508,7 +480,7 @@ class App extends React.Component {
           selectProductsCategory={this.selectProductsCategory}
         />
         <ProductView
-         product={selectedProduct}
+         product={this.state.tempProduct}
          category={this.state.tempCategory}
          categories={this.state.categories}
          addNew={this.state.addNew}

@@ -7,11 +7,11 @@ import {CategoryView} from './CategoryView'
 
 export class ProductView extends React.Component{
   render() {
-    function getUnusedCategories(){
-      var mass=[];mass[0]={name:"-", number:-1}
-      var j=1;
-      for(var i=0; i<categories.length;i++){
-        if(productCategories.indexOf(i)==-1){
+    function getUnusedCategories(productCategories){
+      let mass=[];mass[0]={name:"-", number:-1}
+      let j=1;
+      for(let i=0; i<categories.length;i++){
+        if(productCategories.indexOf(i)===-1){
           mass[j]={name:categories[i].name, number:i};
           j++;
         }
@@ -21,10 +21,9 @@ export class ProductView extends React.Component{
 
     const categories = this.props.categories;
 
-    if((this.props.selectedProduct!=-1 || this.props.addNew)&&!this.props.addNewCategory) {//если продукт существует и имеет номер (начиная с 0)
-      var productCategories=[];
-      var productCategories = this.props.product.categories;
-      var unusedCategories=getUnusedCategories();
+    if((this.props.selectedProduct!==-1 || this.props.addNew)&&!this.props.addNewCategory) {//если продукт существует и имеет номер (начиная с 0)
+      let productCategories = this.props.product.categories;
+      let unusedCategories=getUnusedCategories(productCategories);
 
       return (
         <div className="productView">
@@ -57,15 +56,7 @@ export class ProductView extends React.Component{
     }
     else{
       if(this.props.addNewCategory) {
-        function createClassNameMass(properties){
-          var mass=[];
-          for(var i=0; i<properties.length; i++){
-            mass[i]="propertyName/"+i;
-          }
-          return mass;
-        }
-        var categoryProperties = this.props.category.properties;
-        var classNameMass = createClassNameMass(categoryProperties);
+        let categoryProperties = this.props.category.properties;
         return (
           <div className="productView">
             <input value={this.props.category.name} onChange={this.props.changeCategoryName} placeholder="Category Name"></input>
